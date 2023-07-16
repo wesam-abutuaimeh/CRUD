@@ -1,0 +1,33 @@
+header {
+  background-color: #d9d9d9;
+  color: white;
+  font-weight: 500;
+}
+header nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+header nav .logo {
+  color: #131313;
+  font-size: 19px;
+  font-weight: bold;
+}
+header nav ul {
+  display: flex;
+  align-items: center;
+  height: 70px;
+}
+header nav ul li {
+  list-style: none;
+  margin: 0 15px;
+}
+header nav ul li a {
+  color: #121212;
+  text-decoration: none;
+  font-size: 17px;
+}
+header nav ul li a.active {
+  text-decoration: line-through;
+  color: #70a1ff;
+}

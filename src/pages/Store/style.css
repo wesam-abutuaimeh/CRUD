@@ -1,0 +1,15 @@
+.store__details {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 10px;
+}
+.store__details h1 {
+  margin-bottom: 15px;
+  text-decoration: underline wavy #770a;
+}
+.store__details p {
+  font-size: 17px;
+  color: #333;
+  margin: 5px auto;
+}

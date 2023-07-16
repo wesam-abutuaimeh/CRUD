@@ -1,0 +1,16 @@
+.create__btn {
+  background-color: #2ecc71;
+  color: #fff;
+  display: flex;
+  margin: 15px auto;
+  padding: 10px;
+  font-size: 17px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
