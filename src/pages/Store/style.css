@@ -13,3 +13,11 @@
   color: #333;
   margin: 5px auto;
 }
+.error__message {
+  color: red;
+  font-size: 21px;
+  font-weight: 700;
+  text-decoration: underline wavy red;
+  display: flex;
+  justify-content: center;
+}
