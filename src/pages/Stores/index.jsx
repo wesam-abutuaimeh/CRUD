@@ -1,57 +1,61 @@
-import { Component } from "react";
-import axios from "axios";
-import Table from "../../components/Table";
-import STORES_COLUMNS from "../../constants/stores"
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import axios from "axios";
 import WithParams from "../../WithParams";
+import STORES_COLUMNS from "../../constants/stores";
+import Table from "../../components/Table";
 import "./style.css";
 
-class HomePage extends Component {
-    state = {
-        allStores: [],
-        isLoading: true,
-        rowId: null,
-        isNavgate: false,
-        isCreating: false,
-    }
+function Stores() {
+    const [allStores, setAllStores] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [rowId, setRowId] = useState(null);
+    const [editId, setEditId] = useState(null);
+    const [isNavigate, setIsNavigate] = useState(false);
+    const [isCreating, setIsCreating] = useState(false);
 
-    handleDelete = async (id) => {
-        console.log(id, 'is deleted');
+    const fetchAllStoresData = async () => {
         try {
-            axios.delete(`https://some-data.onrender.com/stores/${id}`);
-        } catch (err) {
-            throw new Error("Error While Deleting the store according store id!")
+            const response = await axios.get("https://some-data.onrender.com/stores");
+            const data = response.data;
+            setAllStores(data);
+            setIsLoading(false);
+        } catch (error) {
+            throw new Error("Error while fetching all stores data.");
         }
-    }
-
-    handleEdit = (id) => {
-        console.log(id, 'is edited');
-        this.setState({ editId: id });
     };
 
-    handleView = (row) => {
-        console.log(this.state.rowId, 'is viewed');
-        this.setState({ rowId: row.id, isNavgate: true, })
+    useEffect(() => {
+        fetchAllStoresData();
+    }, []);
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`https://some-data.onrender.com/stores/${id}`);
+            setAllStores((prevStores) => prevStores.filter((store) => store.id !== id));
+        } catch (error) {
+            throw new Error("Error while deleting the store according to the store id!");
+        }
     };
 
-    componentDidMount() {
-        axios.get("https://some-data.onrender.com/stores")
-            .then((response) => response.data)
-            .then((data) => { this.setState({ allStores: data, isLoading: false, }) });
-    }
+    const handleEdit = (id) => {
+        setEditId(id);
+    };
 
-    render() {
-        return <>
-            <Table columns={STORES_COLUMNS(this.state.allStores, this.handleEdit, this.handleDelete)} data={this.state.allStores}
-                onRowClick={this.handleView} />
-            {this.state.isLoading && <h1> Loading ... </h1>}
-            {this.state.isNavgate && <Navigate to={`/stores/${this.state.rowId}`} replace={true}></Navigate>}
-            <button className="create__btn" onClick={() => this.setState({ isCreating: true })}>
-                Create Post
-            </button>
-            {this.state.isCreating && <Navigate to={"/create"} replace={true}></Navigate>}
+    const handleView = (row) => {
+        setRowId(row.id);
+        setIsNavigate(true);
+    };
+
+    return (
+        <>
+            <Table columns={STORES_COLUMNS(allStores, handleEdit, handleDelete)} data={allStores} onRowClick={handleView} />
+            {isLoading && <h1>Loading...</h1>}
+            {isNavigate && <Navigate to={`/stores/${rowId}`} replace={true} />}
+            <button className="create__btn" onClick={() => setIsCreating(true)}>Create Post</button>
+            {isCreating && <Navigate to={"/create"} replace={true} />}
         </>
-    }
+    );
 }
 
-export default WithParams(HomePage);
+export default WithParams(Stores);

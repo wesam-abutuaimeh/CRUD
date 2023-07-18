@@ -1,76 +1,67 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Container from '../../components/Container';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import './style.css';
 
-class CreateStorePage extends Component {
-    state = {
+function CreateStorePage() {
+    const [name, setName] = useState('');
+    const [cities, setCities] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
-        name: '',
-        cities: '',
-        isLoading: false,
-        isSubmitted: false,
-        error: null,
-
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        if (name === 'name') {
+            setName(value);
+        } else if (name === 'cities') {
+            setCities(value);
+        }
     };
 
-    handleInputChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value });
-    };
-
-    handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        const data = { name, cities };
+        if (!name.trim() || !cities.trim()) {
+            return;
+        }
 
-        const { id, name, cities } = this.state;
-        const data = { id, name, cities };
-
-        this.setState({ isLoading: true, error: null });
+        setIsLoading(true);
+        setError(null);
 
         try {
             await axios.post('https://some-data.onrender.com/stores', data);
-            this.setState({ isLoading: false, isSubmitted: true });
+            setIsLoading(false);
+            setIsSubmitted(true);
         } catch (error) {
-            this.setState({ isLoading: false, error: error.message });
+            setIsLoading(false);
+            setError('Error While Create Store');
         }
-
     };
 
+    isSubmitted && navigate('/stores/all');
 
-    render() {
-        const { name, cities, isLoading, error } = this.state;
-        return (
-            <div>
-                <Container>
-                    <h1>Create Store</h1>
-                    <form onSubmit={this.handleSubmit}>
-                        <label>
-                            Name:
-                            <input
-                                type="text"
-                                name="name"
-                                value={name}
-                                onChange={this.handleInputChange}
-                            />
-                        </label>
-                        <label>
-                            Cities:
-                            <input
-                                type="text"
-                                name="cities"
-                                value={cities}
-                                onChange={this.handleInputChange}
-                            />
-                        </label>
-                        <button type="submit" disabled={isLoading}>
-                            {isLoading ? 'Submitting...' : 'Submit'}
-                        </button>
-                    </form>
-                    {error && <p>Error: {error}</p>}
-                    {this.state.isSubmitted && <Navigate to="/stores/all"></Navigate>}
-                </Container>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <Container>
+                <h1 className='hero__text'>Create Store</h1>
+                <form className='form__container' onSubmit={handleSubmit}>
+                    <label>
+                        Name:
+                        <input className='input' type='text' name='name' value={name} onChange={handleInputChange} />
+                    </label>
+                    <label>
+                        Cities:
+                        <input className='input' type='text' name='cities' value={cities} onChange={handleInputChange} />
+                    </label>
+                    <button type='submit' disabled={isLoading}> {isLoading ? 'Submitting...' : 'Submit'} </button>
+                </form>
+                {error && <p className='error__message'>Error: {error}</p>}
+            </Container>
+        </div>
+    );
 }
 
 export default CreateStorePage;
