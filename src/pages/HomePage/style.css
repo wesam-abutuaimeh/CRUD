@@ -1,0 +1,9 @@
+.landing__section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 70px);
+}
+.landing__section h1 {
+  color: #4caf50;
+}
