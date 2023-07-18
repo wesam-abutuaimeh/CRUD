@@ -1,0 +1,43 @@
+.hero__text {
+  text-align: center;
+  margin: 20px auto;
+  color: #4caf50;
+  font-weight: 800;
+}
+.form__container {
+  width: 350px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+.error__message {
+  color: red;
+  font-size: 21px;
+  font-weight: 700;
+  text-decoration: underline wavy red;
+  display: flex;
+  justify-content: center;
+}
