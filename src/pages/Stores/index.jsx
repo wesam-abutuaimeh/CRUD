@@ -6,12 +6,14 @@ import STORES_COLUMNS from "../../constants/stores";
 import Table from "../../components/Table";
 import "./style.css";
 
+
 function Stores() {
     const [allStores, setAllStores] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [rowId, setRowId] = useState(null);
     const [editId, setEditId] = useState(null);
     const [isNavigate, setIsNavigate] = useState(false);
+    const [isEditNavigate, setIsEditNavigate] = useState(false);
     const [isCreating, setIsCreating] = useState(false);
 
     const fetchAllStoresData = async () => {
@@ -40,6 +42,7 @@ function Stores() {
 
     const handleEdit = (id) => {
         setEditId(id);
+        setIsEditNavigate(true);
     };
 
     const handleView = (row) => {
@@ -52,6 +55,7 @@ function Stores() {
             <Table columns={STORES_COLUMNS(allStores, handleEdit, handleDelete)} data={allStores} onRowClick={handleView} />
             {isLoading && <h1>Loading...</h1>}
             {isNavigate && <Navigate to={`/stores/${rowId}`} replace={true} />}
+            {isEditNavigate && <Navigate to={`/stores/${editId}/edit`} replace={true} />}
             <button className="create__btn" onClick={() => setIsCreating(true)}>Create Post</button>
             {isCreating && <Navigate to={"/create"} replace={true} />}
         </>
