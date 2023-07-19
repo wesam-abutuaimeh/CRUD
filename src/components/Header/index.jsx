@@ -13,12 +13,11 @@ class Header extends Component {
                         <li><NavLink to={"/"}>Home</NavLink></li>
                         <li><NavLink to={"/stores/all"}>Stores</NavLink></li>
                         <li><NavLink to={"/create"}>Create</NavLink></li>
-                        <li><NavLink to={"/update"}>Update</NavLink></li>
+                        <li><NavLink to={"/edit"}>Update</NavLink></li>
                     </ul>
                 </nav>
             </Container>
         </header>);
     }
 }
-
 export default Header;
