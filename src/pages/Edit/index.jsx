@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import apiCalls from "../../utilities";
 import Container from "../../components/Container";
 import "./style.css";
 
@@ -14,14 +14,15 @@ function EditStorePage(props) {
 
     const fetchStoreDetails = async () => {
         try {
-            const response = await axios.get(`https://some-data.onrender.com/stores/${id}`);
-            const storeData = response.data;
+            const response = await apiCalls("get", `https://some-data.onrender.com/stores/${id}`);
+            const storeData = response;
             setName(storeData.name);
             setCities(storeData.cities);
         } catch (error) {
             setError("Error while fetching store details!");
         }
     };
+
     useEffect(() => {
         fetchStoreDetails();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,7 +47,7 @@ function EditStorePage(props) {
         setIsLoading(true);
         setError(null);
         try {
-            await axios.put(`https://some-data.onrender.com/stores/${id}`, data);
+            await apiCalls("update", `https://some-data.onrender.com/stores/${id}`, data);
             setIsLoading(false);
             navigate("/stores/all");
         } catch (error) {

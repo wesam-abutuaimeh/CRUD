@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import apiCalls from "../../utilities";
+
 import Container from '../../components/Container';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
@@ -29,7 +30,7 @@ function CreateStorePage() {
         setIsLoading(true);
         setError(null);
         try {
-            await axios.post('https://some-data.onrender.com/stores', data);
+            await apiCalls("create", 'https://some-data.onrender.com/stores', data)
             setIsLoading(false);
             navigate('/stores/all');
         } catch (error) {

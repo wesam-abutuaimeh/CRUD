@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import STORES_COLUMNS from "../../constants/stores";
+import apiCalls from "../../utilities";
 import Table from "../../components/Table";
 import "./style.css";
 
@@ -10,24 +10,19 @@ function Stores() {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
-    const fetchAllStoresData = async () => {
-        try {
-            const response = await axios.get("https://some-data.onrender.com/stores");
-            const data = response.data;
-            setAllStores(data);
-            setIsLoading(false);
-        } catch (error) {
-            throw new Error("Error while fetching all stores data.");
-        }
+    const handleStoresData = async () => {
+        const response = await apiCalls('get', 'https://some-data.onrender.com/stores');
+        setAllStores(response);
+        setIsLoading(false);
     };
 
     useEffect(() => {
-        fetchAllStoresData();
+        handleStoresData();
     }, []);
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`https://some-data.onrender.com/stores/${id}`);
+            await apiCalls('delete', `https://some-data.onrender.com/stores/${id}`);
             setAllStores((prevStores) => prevStores.filter((store) => store.id !== id));
         } catch (error) {
             throw new Error("Error while deleting the store according to the store id!");
@@ -48,6 +43,7 @@ function Stores() {
             {isLoading && <h1>Loading...</h1>}
             <button className="create__btn" onClick={() => navigate("/create")}> Create Post </button>
         </>
+
     );
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import apiCalls from "../../utilities";
 import "./style.css";
 
 function Store(props) {
@@ -11,8 +11,8 @@ function Store(props) {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`https://some-data.onrender.com/stores/${id}`);
-            const data = response.data;
+            const response = await apiCalls("get", `https://some-data.onrender.com/stores/${id}`);
+            const data = response;
             setStore(data);
         } catch (error) {
             setError("Error While Fetching Store Data 🙃🙃");
