@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import WithParams from "../../WithParams";
 import "./style.css";
 
 function Store(props) {
+    let { id } = useParams();
     const [store, setStore] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`https://some-data.onrender.com/stores/${props.params.id}`);
+            const response = await axios.get(`https://some-data.onrender.com/stores/${id}`);
             const data = response.data;
             setStore(data);
         } catch (error) {
-            setError('Error While Fetching Store Data 🙃🙃')
+            setError("Error While Fetching Store Data 🙃🙃");
         } finally {
             setIsLoading(false);
         }
@@ -23,7 +24,7 @@ function Store(props) {
     useEffect(() => {
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.params.id]);
+    }, [id]);
 
     return (
         <div>
@@ -40,4 +41,4 @@ function Store(props) {
     );
 }
 
-export default WithParams(Store);
+export default Store;

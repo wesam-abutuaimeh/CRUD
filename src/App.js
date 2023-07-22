@@ -12,7 +12,7 @@ function App() {
     <div className="App">
       <Header />
       <Routes>
-        <Route path={Router.Home} element={<HomePage />} />
+        <Route path={Router.HOME} element={<HomePage />} />
         <Route path={Router.CRUD.STORES} element={<Stores />} />
         <Route path={Router.CRUD.STORE} element={<Store />} />
         <Route path={Router.CRUD.CREATE} element={<Create />} />

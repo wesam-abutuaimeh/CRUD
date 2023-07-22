@@ -1,18 +1,15 @@
-
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import WithParams from "../../WithParams";
-import Container from '../../components/Container';
-import './style.css';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import Container from "../../components/Container";
+import "./style.css";
 
 function EditStorePage(props) {
-    const id = props.params.id;
+    const { id } = useParams();
     const navigate = useNavigate();
-    const [name, setName] = useState('');
-    const [cities, setCities] = useState('');
+    const [name, setName] = useState("");
+    const [cities, setCities] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [isSubmitted, setIsSubmitted] = useState(false);
     const [error, setError] = useState(null);
 
     const fetchStoreDetails = async () => {
@@ -22,21 +19,20 @@ function EditStorePage(props) {
             setName(storeData.name);
             setCities(storeData.cities);
         } catch (error) {
-            setError('Error while fetching store details!');
+            setError("Error while fetching store details!");
         }
-    }
+    };
     useEffect(() => {
-
         fetchStoreDetails();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        if (name === 'name') {
+        if (name === "name") {
             setName(value);
-        } else if (name === 'cities') {
-            if (typeof value === 'string') {
+        } else if (name === "cities") {
+            if (typeof value === "string") {
                 setCities(value.trim());
             } else {
                 setCities(value);
@@ -44,58 +40,44 @@ function EditStorePage(props) {
         }
     };
 
-
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const data = { name, cities }
+        const data = { name, cities };
         setIsLoading(true);
         setError(null);
         try {
             await axios.put(`https://some-data.onrender.com/stores/${id}`, data);
             setIsLoading(false);
-            setIsSubmitted(true);
+            navigate("/stores/all");
         } catch (error) {
             setIsLoading(false);
-            setError('Error while updating store');
+            setError("Error while updating store");
         }
     };
-
-    isSubmitted && navigate('/stores/all');
 
     return (
         <div>
             <Container>
-                <h1 className='hero__text'>Update Store {id}</h1>
+                <h1 className="hero__text">Update Store {id}</h1>
                 {isLoading ? (
                     <p>Loading...</p>
                 ) : (
-                    <form className='form__container' onSubmit={handleSubmit}>
+                    <form className="form__container" onSubmit={handleSubmit}>
                         <label>
                             Name:
-                            <input
-                                className='input'
-                                type='text'
-                                name='name'
-                                value={name}
-                                onChange={handleInputChange}
-                            />
+                            <input className="input" type="text" name="name" value={name} onChange={handleInputChange} />
                         </label>
                         <label>
                             Cities:
-                            <input
-                                className='input'
-                                type='text'
-                                name='cities'
-                                value={cities}
-                                onChange={handleInputChange}
-                            />
+                            <input className="input" type="text" name="cities" value={cities} onChange={handleInputChange} />
                         </label>
-                        <button type='submit'>Update Store</button>
+                        <button type="submit">Update Store</button>
                     </form>
                 )}
-                {error && <p className='error__message'>Error: {error}</p>}
+                {error && <p className="error__message">Error: {error}</p>}
             </Container>
         </div>
     );
 }
-export default WithParams(EditStorePage);
+
+export default EditStorePage;

@@ -1,20 +1,14 @@
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import WithParams from "../../WithParams";
 import STORES_COLUMNS from "../../constants/stores";
 import Table from "../../components/Table";
 import "./style.css";
 
-
 function Stores() {
     const [allStores, setAllStores] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [rowId, setRowId] = useState(null);
-    const [editId, setEditId] = useState(null);
-    const [isNavigate, setIsNavigate] = useState(false);
-    const [isEditNavigate, setIsEditNavigate] = useState(false);
-    const [isCreating, setIsCreating] = useState(false);
+    const navigate = useNavigate();
 
     const fetchAllStoresData = async () => {
         try {
@@ -41,25 +35,20 @@ function Stores() {
     };
 
     const handleEdit = (id) => {
-        setEditId(id);
-        setIsEditNavigate(true);
+        navigate(`/stores/${id}/edit`);
     };
 
     const handleView = (row) => {
-        setRowId(row.id);
-        setIsNavigate(true);
+        navigate(`/stores/${row.id}`);
     };
 
     return (
         <>
             <Table columns={STORES_COLUMNS(allStores, handleEdit, handleDelete)} data={allStores} onRowClick={handleView} />
             {isLoading && <h1>Loading...</h1>}
-            {isNavigate && <Navigate to={`/stores/${rowId}`} replace={true} />}
-            {isEditNavigate && <Navigate to={`/stores/${editId}/edit`} replace={true} />}
-            <button className="create__btn" onClick={() => setIsCreating(true)}>Create Post</button>
-            {isCreating && <Navigate to={"/create"} replace={true} />}
+            <button className="create__btn" onClick={() => navigate("/create")}> Create Post </button>
         </>
     );
 }
 
-export default WithParams(Stores);
+export default Stores;

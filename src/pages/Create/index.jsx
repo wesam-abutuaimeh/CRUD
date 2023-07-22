@@ -5,12 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import './style.css';
 
 function CreateStorePage() {
+    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [cities, setCities] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [isSubmitted, setIsSubmitted] = useState(false);
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -27,21 +26,17 @@ function CreateStorePage() {
         if (!name.trim() || !cities.trim()) {
             return;
         }
-
         setIsLoading(true);
         setError(null);
-
         try {
             await axios.post('https://some-data.onrender.com/stores', data);
             setIsLoading(false);
-            setIsSubmitted(true);
+            navigate('/stores/all');
         } catch (error) {
             setIsLoading(false);
             setError('Error While Create Store');
         }
     };
-
-    isSubmitted && navigate('/stores/all');
 
     return (
         <div>
