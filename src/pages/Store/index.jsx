@@ -8,23 +8,21 @@ function Store(props) {
     const [store, setStore] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    const fetchData = async () => {
-        try {
-            const response = await apiCalls("get", `https://some-data.onrender.com/stores/${id}`);
-            const data = response;
-            setStore(data);
-        } catch (error) {
-            setError("Error While Fetching Store Data 🙃🙃");
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    ;
 
     useEffect(() => {
-        fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+        (async () => {
+            try {
+                const response = await apiCalls("get", `https://some-data.onrender.com/stores/${id}`);
+                const data = response;
+                setStore(data);
+            } catch (error) {
+                setError("Error While Fetching Store Data 🙃🙃");
+            } finally {
+                setIsLoading(false);
+            }
+        })();
+    }, [id, store]);
 
     return (
         <div>
