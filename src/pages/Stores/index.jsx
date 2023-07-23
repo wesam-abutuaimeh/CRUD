@@ -18,7 +18,7 @@ function Stores() {
 
     useEffect(() => {
         handleStoresData();
-    }, []);
+    }, [allStores]);
 
     const handleDelete = async (id) => {
         try {
