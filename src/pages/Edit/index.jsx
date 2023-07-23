@@ -12,20 +12,17 @@ function EditStorePage(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const fetchStoreDetails = async () => {
-        try {
-            const response = await apiCalls("get", `https://some-data.onrender.com/stores/${id}`);
-            const storeData = response;
-            setName(storeData.name);
-            setCities(storeData.cities);
-        } catch (error) {
-            setError("Error while fetching store details!");
-        }
-    };
-
     useEffect(() => {
-        fetchStoreDetails();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        (async () => {
+            try {
+                const response = await apiCalls("get", `https://some-data.onrender.com/stores/${id}`);
+                const storeData = response;
+                setName(storeData.name);
+                setCities(storeData.cities);
+            } catch (error) {
+                setError("Error while fetching store details!");
+            }
+        })();
     }, [id]);
 
     const handleInputChange = (event) => {
