@@ -3,22 +3,32 @@ import axios from "axios";
 const apiCalls = async (variant, url, requestData) => {
     try {
         let response;
-        if (variant === "get") {
-            response = await axios.get(url);
+        switch (variant) {
+            case "get":
+                response = await axios.get(url);
+                break;
+            case "create":
+                response = await axios.post(url, requestData);
+                break;
+            case "update":
+                response = await axios.put(url, requestData);
+                break;
+            case "delete":
+                response = await axios.delete(url);
+                break;
+            default:
+                throw new Error("Invalid variant provided.");
         }
-        if (variant === "create") {
-            response = await axios.post(url, requestData);
+        if (!response.data) {
+            throw new Error("No data received from the server.");
         }
-        if (variant === "update") {
-            response = await axios.put(url, requestData);
-        }
-        if (variant === "delete") {
-            response = await axios.delete(url);
-        }
-        const data = response.data;
-        return data;
+        return response.data;
     } catch (error) {
-        throw new Error("Error while fetching data.");
+        if (error.response && error.response.data && error.response.data.message) {
+            throw new Error(error.response.data.message);
+        } else {
+            throw new Error("Error while making the API call!");
+        }
     }
 };
 
