@@ -8,41 +8,44 @@ import "./style.css";
 
 function Stores() {
     const [allStores, setAllStores] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const handleStoresData = async () => {
-        const response = await apiCalls(REQUESTS.GET, API_URL);
-        setAllStores(response);
-        setIsLoading(false);
+        try {
+            const data = await apiCalls(REQUESTS.GET, API_URL);
+            setAllStores(data);
+            setIsLoading(true);
+        } catch (error) {
+            setError(`Error While Fetching Store Data 🙃🙃 ==> ${error}`);
+        } finally {
+            setIsLoading(false);
+        }
     };
-
-    useEffect(() => {
-        handleStoresData();
-    }, [allStores]);
 
     const handleDelete = async (id) => {
         try {
             await apiCalls(REQUESTS.DELETE, `${API_URL}/${id}`);
             setAllStores((prevStores) => prevStores.filter((store) => store.id !== id));
         } catch (error) {
-            throw new Error("Error while deleting the store according to the store id!");
+            setError(`Error while deleting the store according to the store id! ==> ${error}`);
         }
     };
 
-    const handleEdit = (id) => {
-        navigate(`/stores/${id}/edit`);
-    };
+    const handleEdit = (id) => { navigate(`/stores/${id}/edit`); };
+    const handleView = (row) => { navigate(`/stores/${row.id}`); };
 
-    const handleView = (row) => {
-        navigate(`/stores/${row.id}`);
-    };
+    useEffect(() => {
+        handleStoresData();
+    }, [allStores]);
 
     return (
         <>
             <Table columns={STORES_COLUMNS(allStores, handleEdit, handleDelete)} data={allStores} onRowClick={handleView} />
             {isLoading && <h1>Loading...</h1>}
             <button className="create__btn" onClick={() => navigate("/create")}> Create Post </button>
+            {error && <span className="error__message">{error}</span>}
         </>
     );
 }
