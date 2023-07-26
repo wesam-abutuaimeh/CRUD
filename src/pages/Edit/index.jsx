@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from 'sweetalert2'
 import Container from "../../components/Container";
 import { REQUESTS, apiCalls } from "../../utilities";
 import { API_URL } from '../../config/api';
@@ -45,9 +46,18 @@ function EditStorePage(props) {
         try {
             await apiCalls(REQUESTS.UPDATE, `${API_URL}/${id}`, data);
             setIsLoading(true);
-            navigate("/stores/all");
+            Swal.fire({
+                title: 'Do you want to save the changes?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                denyButtonText: `Don't save`,
+            }).then((result) => {
+                result.isConfirmed && (Swal.fire('Saved!', '', 'success') && navigate("/stores/all"))
+                result.isDenied && Swal.fire('Changes are not saved', '', 'info');
+            })
         } catch (error) {
-            setError("Error while updating store");
+            setError(`Error while updating store! ==> ${error}`);
         } finally {
             setIsLoading(false);
         }
@@ -69,7 +79,7 @@ function EditStorePage(props) {
                             Cities:
                             <input className="input" type="text" name="cities" value={cities} onChange={handleInputChange} />
                         </label>
-                        <button type="submit">Update Store</button>
+                        <button type="submit" >Update Store</button>
                     </form>
                 )}
                 {error && <p className="error__message">Error: {error}</p>}
