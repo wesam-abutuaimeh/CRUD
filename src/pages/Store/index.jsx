@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import apiCalls from "../../utilities";
+import { REQUESTS, apiCalls } from "../../utilities";
+import { API_URL } from '../../config/api';
 import "./style.css";
 
 function Store(props) {
@@ -13,7 +14,7 @@ function Store(props) {
     useEffect(() => {
         (async () => {
             try {
-                const response = await apiCalls("get", `https://some-data.onrender.com/stores/${id}`);
+                const response = await apiCalls(REQUESTS.GET, `${API_URL}/${id}`);
                 const data = response;
                 setStore(data);
             } catch (error) {

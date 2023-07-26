@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import apiCalls from "../../utilities";
 import Container from "../../components/Container";
+import { REQUESTS, apiCalls } from "../../utilities";
+import { API_URL } from '../../config/api';
 import "./style.css";
 
 function EditStorePage(props) {
@@ -15,7 +16,7 @@ function EditStorePage(props) {
     useEffect(() => {
         (async () => {
             try {
-                const response = await apiCalls("get", `https://some-data.onrender.com/stores/${id}`);
+                const response = await apiCalls(REQUESTS.GET, `${API_URL}/${id}`);
                 const storeData = response;
                 setName(storeData.name);
                 setCities(storeData.cities);
@@ -44,7 +45,7 @@ function EditStorePage(props) {
         setIsLoading(true);
         setError(null);
         try {
-            await apiCalls("update", `https://some-data.onrender.com/stores/${id}`, data);
+            await apiCalls(REQUESTS.UPDATE, `${API_URL}/${id}`, data);
             setIsLoading(false);
             navigate("/stores/all");
         } catch (error) {

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import STORES_COLUMNS from "../../constants/stores";
-import apiCalls from "../../utilities";
+import { REQUESTS, apiCalls } from "../../utilities";
+import { API_URL } from '../../config/api';
 import Table from "../../components/Table";
 import "./style.css";
 
@@ -11,7 +12,7 @@ function Stores() {
     const navigate = useNavigate();
 
     const handleStoresData = async () => {
-        const response = await apiCalls('get', 'https://some-data.onrender.com/stores');
+        const response = await apiCalls(REQUESTS.GET, API_URL);
         setAllStores(response);
         setIsLoading(false);
     };
@@ -22,7 +23,7 @@ function Stores() {
 
     const handleDelete = async (id) => {
         try {
-            await apiCalls('delete', `https://some-data.onrender.com/stores/${id}`);
+            await apiCalls(REQUESTS.DELETE, `${API_URL}/${id}`);
             setAllStores((prevStores) => prevStores.filter((store) => store.id !== id));
         } catch (error) {
             throw new Error("Error while deleting the store according to the store id!");
@@ -43,7 +44,6 @@ function Stores() {
             {isLoading && <h1>Loading...</h1>}
             <button className="create__btn" onClick={() => navigate("/create")}> Create Post </button>
         </>
-
     );
 }
 

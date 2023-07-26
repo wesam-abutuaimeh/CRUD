@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import apiCalls from "../../utilities";
-
-import Container from '../../components/Container';
 import { useNavigate } from 'react-router-dom';
+import Container from '../../components/Container';
+import { REQUESTS, apiCalls } from "../../utilities";
+import { API_URL } from '../../config/api';
 import './style.css';
 
 function CreateStorePage() {
@@ -30,7 +30,7 @@ function CreateStorePage() {
         setIsLoading(true);
         setError(null);
         try {
-            await apiCalls("create", 'https://some-data.onrender.com/stores', data)
+            await apiCalls(REQUESTS.POST, API_URL, data)
             setIsLoading(false);
             navigate('/stores/all');
         } catch (error) {

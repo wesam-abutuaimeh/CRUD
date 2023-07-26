@@ -1,5 +1,12 @@
 import axios from "axios";
 
+const REQUESTS = {
+    'GET': 'get',
+    'POST': 'create',
+    'UPDATE': 'update',
+    'DELETE': 'delete',
+};
+
 const apiCalls = async (variant, url, requestData) => {
     const requests = {
         'get': async () => await axios.get(url),
@@ -15,4 +22,4 @@ const apiCalls = async (variant, url, requestData) => {
     }
 };
 
-export default apiCalls;
+export { REQUESTS, apiCalls };
