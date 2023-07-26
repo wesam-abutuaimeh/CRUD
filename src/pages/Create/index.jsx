@@ -14,19 +14,22 @@ function CreateStorePage() {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        if (name === 'name') {
-            setName(value);
-        } else if (name === 'cities') {
-            setCities(value);
+        switch (name) {
+            case "name":
+                setName(value)
+                break;
+            case "cities":
+                setCities(value);
+                break;
+            default:
+                break;
         }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = { name, cities };
-        if (!name.trim() || !cities.trim()) {
-            return;
-        }
+        if (!name.trim() || !cities.trim()) { return; }
         setIsLoading(true);
         setError(null);
         try {
