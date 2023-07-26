@@ -7,18 +7,17 @@ import "./style.css";
 function Store(props) {
     let { id } = useParams();
     const [store, setStore] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    ;
 
     useEffect(() => {
         (async () => {
             try {
-                const response = await apiCalls(REQUESTS.GET, `${API_URL}/${id}`);
-                const data = response;
+                const data = await apiCalls(REQUESTS.GET, `${API_URL}/${id}`);
                 setStore(data);
+                setIsLoading(true);
             } catch (error) {
-                setError("Error While Fetching Store Data 🙃🙃");
+                setError(`Error While Fetching Store Data 🙃🙃 ==> ${error}`);
             } finally {
                 setIsLoading(false);
             }
@@ -33,7 +32,7 @@ function Store(props) {
                     <p>Store Id: {store.id}</p>
                     <p>Store Name: {store.name}</p>
                     <p>Store Location: {store.cities}</p>
-                    <span className="error__message">{error}</span>
+                    {error && <span className="error__message">{error}</span>}
                 </div>
             )}
         </div>
