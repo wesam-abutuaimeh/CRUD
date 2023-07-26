@@ -16,41 +16,40 @@ function EditStorePage(props) {
     useEffect(() => {
         (async () => {
             try {
-                const response = await apiCalls(REQUESTS.GET, `${API_URL}/${id}`);
-                const storeData = response;
+                const storeData = await apiCalls(REQUESTS.GET, `${API_URL}/${id}`);
                 setName(storeData.name);
                 setCities(storeData.cities);
             } catch (error) {
-                setError("Error while fetching store details!");
+                setError(`Error while fetching store details! => ${error}`);
             }
         })();
     }, [id]);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        if (name === "name") {
-            setName(value);
-        } else if (name === "cities") {
-            if (typeof value === "string") {
+        switch (name) {
+            case "name":
+                setName(value);
+                break;
+            case "cities":
                 setCities(value.trim());
-            } else {
-                setCities(value);
-            }
+                break;
+            default:
+                break;
         }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = { name, cities };
-        setIsLoading(true);
-        setError(null);
         try {
             await apiCalls(REQUESTS.UPDATE, `${API_URL}/${id}`, data);
-            setIsLoading(false);
+            setIsLoading(true);
             navigate("/stores/all");
         } catch (error) {
-            setIsLoading(false);
             setError("Error while updating store");
+        } finally {
+            setIsLoading(false);
         }
     };
 
