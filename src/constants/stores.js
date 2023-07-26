@@ -19,7 +19,7 @@ const STORES_COLUMNS = (data, handleEdit, handleDelete) => [
       <div onClick={(e) => e.stopPropagation()}>
         <button
           style={{
-            backgroundColor: "#c0392b",
+            backgroundColor: "#2ecc71",
             color: "white",
             padding: "10px",
             borderRadius: "5px",
@@ -33,7 +33,7 @@ const STORES_COLUMNS = (data, handleEdit, handleDelete) => [
         </button>
         <button
           style={{
-            backgroundColor: "#2ecc71",
+            backgroundColor: "#c0392b",
             color: "white",
             padding: "10px",
             borderRadius: "4px",
