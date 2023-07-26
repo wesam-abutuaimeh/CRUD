@@ -57,12 +57,17 @@ function Stores() {
 
     return (
         <>
-            <Table columns={STORES_COLUMNS(allStores, handleEdit, handleDelete)} data={allStores} onRowClick={handleView} />
-            {isLoading && <h1>Loading...</h1>}
-            <button className="create__btn" onClick={() => navigate("/create")}> Create Post </button>
-            {error && <span className="error__message">{error}</span>}
+            {!isLoading ? (
+                <>
+                    <Table columns={STORES_COLUMNS(allStores, handleEdit, handleDelete)} data={allStores} onRowClick={handleView} />
+                    <button className="create__btn" onClick={() => navigate("/create")}> Create Post </button>
+                    {error && <span className="error__message">{error}</span>}
+                </>
+            ) : (
+                <h1>Loading...</h1>
+            )}
         </>
     );
-}
+};
 
 export default Stores;
