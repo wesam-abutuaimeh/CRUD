@@ -14,18 +14,6 @@ function EditStorePage(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const storeData = await apiCalls(REQUESTS.GET, `${API_URL}/${id}`);
-                setName(storeData.name);
-                setCities(storeData.cities);
-            } catch (error) {
-                setError(`Error while fetching store details! => ${error}`);
-            }
-        })();
-    }, [id]);
-
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         switch (name) {
@@ -62,6 +50,18 @@ function EditStorePage(props) {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const storeData = await apiCalls(REQUESTS.GET, `${API_URL}/${id}`);
+                setName(storeData.name);
+                setCities(storeData.cities);
+            } catch (error) {
+                setError(`Error while fetching store details! => ${error}`);
+            }
+        })();
+    }, [id]);
 
     return (
         <div>
