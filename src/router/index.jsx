@@ -7,7 +7,7 @@ import Create from "../pages/Create";
 import Edit from "../pages/Edit";
 
 const Router = () => {
-    return useRoutes([
+    const routes = useRoutes([
         {
             path: PATHS.HOME,
             element: <HomePage />,
@@ -29,6 +29,7 @@ const Router = () => {
             element: <Edit />,
         },
     ]);
+    return routes;
 };
 
 export default Router;
