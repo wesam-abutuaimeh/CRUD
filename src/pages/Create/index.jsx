@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Container from '../../components/Container';
-import { REQUESTS, apiCalls } from "../../utilities";
 import { API_URL } from '../../config/api';
+import useAPI from '../../hooks/useAPI';
 import './style.css';
 
 function CreateStorePage() {
-    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [cities, setCities] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-
+    const navigate = useNavigate();
+    const { data, isLoading, post } = useAPI(API_URL);
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         switch (name) {
@@ -29,17 +27,9 @@ function CreateStorePage() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = { name, cities };
-        if (!name.trim() || !cities.trim()) { return; }
-        setIsLoading(true);
-        setError(null);
-        try {
-            await apiCalls(REQUESTS.POST, API_URL, data)
-            setIsLoading(false);
-            navigate('/stores/all');
-        } catch (error) {
-            setIsLoading(false);
-            setError('Error While Create Store');
-        }
+        if (!name.trim() || !cities.trim()) return;
+        post(data);
+        navigate('/stores/all');
     };
 
     return (
@@ -57,7 +47,7 @@ function CreateStorePage() {
                     </label>
                     <button type='submit' disabled={isLoading}> {isLoading ? 'Submitting...' : 'Submit'} </button>
                 </form>
-                {error && <p className='error__message'>Error: {error}</p>}
+                {data.error && <p className='error__message'>Error: {data.error}</p>}
             </Container>
         </div>
     );
