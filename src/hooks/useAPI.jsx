@@ -1,15 +1,14 @@
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
 
-function useAPI(API_URL) {
+const useAPI = (API_URL) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-
     const get = async () => {
         try {
+            setIsLoading(true);
             const response = await axios.get(API_URL);
             setData(response?.data?.data || response?.data);
-            setIsLoading(true);
         } catch (error) {
             throw new Error(error);
         } finally {
@@ -53,7 +52,19 @@ function useAPI(API_URL) {
         }
     };
 
-    return { data, isLoading, get, getItem, deleteItem, post };
+    const put = async (url, data) => {
+        try {
+            const response = await axios.put(url, data);
+            setIsLoading(true);
+            return response.data;
+        } catch (error) {
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    return { data, isLoading, get, getItem, deleteItem, post, put };
 }
 
 export default useAPI;
