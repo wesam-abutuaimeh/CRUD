@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import Container from "../../components/Container";
-import { REQUESTS, apiCalls } from "../../utilities";
-import { API_URL } from '../../config/api';
+import { API_URL } from "../../config/api";
+import useAPI from "../../hooks/useAPI";
 import "./style.css";
 
 function EditStorePage(props) {
@@ -11,8 +11,7 @@ function EditStorePage(props) {
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [cities, setCities] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const { data, isLoading, error, put, getItem } = useAPI(API_URL);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -31,37 +30,29 @@ function EditStorePage(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = { name, cities };
-        try {
-            await apiCalls(REQUESTS.UPDATE, `${API_URL}/${id}`, data);
-            setIsLoading(true);
-            Swal.fire({
-                title: 'Do you want to save the changes?',
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: 'Save',
-                denyButtonText: `Don't save`,
-            }).then((result) => {
-                result.isConfirmed && (Swal.fire('Saved!', '', 'success') && navigate("/stores/all"))
-                result.isDenied && Swal.fire('Changes are not saved', '', 'info');
-            })
-        } catch (error) {
-            setError(`Error while updating store! ==> ${error}`);
-        } finally {
-            setIsLoading(false);
-        }
+        put(`${API_URL}/${id}`, data);
+        Swal.fire({
+            title: "Do you want to save the changes?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Save",
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            result.isConfirmed &&
+                Swal.fire("Saved!", "", "success") &&
+                navigate("/stores/all");
+            result.isDenied && Swal.fire("Changes are not saved", "", "info");
+        });
     };
 
     useEffect(() => {
-        (async () => {
-            try {
-                const storeData = await apiCalls(REQUESTS.GET, `${API_URL}/${id}`);
-                setName(storeData.name);
-                setCities(storeData.cities);
-            } catch (error) {
-                setError(`Error while fetching store details! => ${error}`);
-            }
-        })();
-    }, [id]);
+        getItem(id);
+    }, []);
+
+    useEffect(() => {
+        setName(data.name);
+        setCities(data.cities);
+    }, [data]);
 
     return (
         <div>
@@ -79,7 +70,7 @@ function EditStorePage(props) {
                             Cities:
                             <input className="input" type="text" name="cities" value={cities} onChange={handleInputChange} />
                         </label>
-                        <button type="submit" >Update Store</button>
+                        <button type="submit">Update Store</button>
                     </form>
                 )}
                 {error && <p className="error__message">Error: {error}</p>}

@@ -10,7 +10,7 @@ function Store(props) {
 
     useEffect(() => {
         getItem(id);
-    }, [getItem, id]);
+    }, [id]);
 
     return (
         <div>

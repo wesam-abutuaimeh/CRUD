@@ -38,18 +38,18 @@ function Stores() {
 
     useEffect(() => {
         get();
-    }, [get]);
+    }, []);
 
     return (
         <>
-            {!isLoading ? (
+            {isLoading ? (
+                <h1>Loading...</h1>
+            ) : (
                 <>
                     <Table columns={STORES_COLUMNS(data, handleEdit, handleDelete)} data={data} onRowClick={handleView} />
-                    <button className="create__btn" onClick={() => navigate("/create")}>Create Post</button>
+                    <button className="create__btn" onClick={() => navigate("/create")}> Create Post </button>
                     {data.error && <span className="error__message">{data.error}</span>}
                 </>
-            ) : (
-                <h1>Loading...</h1>
             )}
         </>
     );
