@@ -84,8 +84,7 @@ const useAPI = (API_URL) => {
         }
     };
     return {
-        data: state.data,
-        isLoading: state.isLoading,
+        ...state,
         get, getItem, deleteItem, post, put,
     };
 };
