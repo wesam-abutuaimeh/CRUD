@@ -1,35 +1,9 @@
 import { useRoutes } from "react-router-dom";
-import PATHS from "./paths";
-import HomePage from "../pages/HomePage";
-import Stores from "../pages/Stores";
-import Store from "../pages/Store";
-import Create from "../pages/Create";
-import Edit from "../pages/Edit";
+import ROUTES from "./routes";
 
 const Router = () => {
-    const routes = useRoutes([
-        {
-            path: PATHS.HOME,
-            element: <HomePage />,
-        },
-        {
-            path: PATHS.CRUD.STORES,
-            element: <Stores />,
-        },
-        {
-            path: PATHS.CRUD.STORE,
-            element: <Store />,
-        },
-        {
-            path: PATHS.CRUD.CREATE,
-            element: <Create />,
-        },
-        {
-            path: PATHS.CRUD.EDIT,
-            element: <Edit />,
-        },
-    ]);
-    return routes;
-};
+    const router = useRoutes(ROUTES);
+    return router;
+}
 
 export default Router;
