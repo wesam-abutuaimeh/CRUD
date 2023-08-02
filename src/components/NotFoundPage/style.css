@@ -1,0 +1,8 @@
+.not__found__page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff0000d6;
+  text-decoration: underline wavy 1px red;
+}
