@@ -6,5 +6,8 @@ const PATHS = {
     CREATE: "/create",
     EDIT: "/stores/:id/edit",
   },
+  NOT_FOUND: {
+    "*": "*",
+  },
 };
 export default PATHS;
